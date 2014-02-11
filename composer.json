@@ -1,0 +1,22 @@
+{
+	"name": "stephen-hill/Nimoy",
+	"description": "Nimoy is a PHP User Session hanlder which is simple and secure... hopefully.",
+	"require": {
+		"php": ">= 5.5",
+		"predis/predis": "0.*",
+		"pimple/pimple": "2.*"
+	},
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Stephen Hill",
+			"email": "stephen@gatekiller.co.uk",
+			"homepage": "http://github.com/stephen-hill"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Nimoy\\": "src/"
+		}
+	}
+}
