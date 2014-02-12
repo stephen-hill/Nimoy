@@ -2,6 +2,8 @@
 
 namespace Nimoy
 {
+	use InvalidArgumentException;
+	
 	class Session extends \Pimple
 	{
 		private $key;
@@ -19,6 +21,11 @@ namespace Nimoy
 			}
 			else
 			{
+				if (strlen($this->key) < 64)
+				{
+					throw new InvalidArgumentException('Argument $key must contain 64 or more characters.');
+				}
+				
 				$this->key = $key;
 			}
 		}
