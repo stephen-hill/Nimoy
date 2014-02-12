@@ -29,6 +29,17 @@ namespace Nimoy
 				$this->key = $key;
 			}
 		}
+
+		public function getKey()
+		{
+			return $this->key;
+		}
+
+		public function regenerate()
+		{
+			$this->key = $this->generateKey();
+			return $this->getKey();
+		}
 		
 		private function generateKey()
 		{
