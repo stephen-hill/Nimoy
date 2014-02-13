@@ -37,8 +37,7 @@ namespace Nimoy
 
 		public function regenerate()
 		{
-			$this->key = $this->generateKey();
-			return $this->getKey();
+			return $this->key = $this->generateKey();
 		}
 		
 		private function generateKey()
