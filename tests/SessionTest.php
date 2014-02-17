@@ -36,4 +36,11 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
 		$this->assertNotEquals($a, $b);
 	}
+
+	public function testGetSetName()
+	{
+		$s = new Session();
+		$s->setName('Session Name');
+		$this->assertEquals('Session Name', $s->getName());
+	}
 }
