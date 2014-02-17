@@ -7,6 +7,7 @@ namespace Nimoy
 	class Session extends \Pimple
 	{
 		private $key;
+		private $name = '';
 		
 		/**
 		 * Creates an instance of this class using either an existing session key
@@ -33,6 +34,22 @@ namespace Nimoy
 		public function getKey()
 		{
 			return $this->key;
+		}
+
+		public function getName()
+		{
+
+			return $this->name;
+		}
+
+		public function setName($name)
+		{
+			if (is_string($name) === false)
+			{
+				throw new InvalidArgumentException('Argument $name must be a string.');
+			}
+
+			$this->name = $name;
 		}
 
 		public function regenerate()
