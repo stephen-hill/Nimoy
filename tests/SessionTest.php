@@ -9,7 +9,6 @@ class SessionTest extends PHPUnit_Framework_TestCase
     {
         $s = new Session();
         $this->assertInstanceOf(Session::class, $s);
-        $this->assertInstanceOf(Pimple::class, $s);
     }
 
     public function testValidKey()
@@ -35,12 +34,5 @@ class SessionTest extends PHPUnit_Framework_TestCase
         $b = $s->regenerate();
 
         $this->assertNotEquals($a, $b);
-    }
-
-    public function testGetSetName()
-    {
-        $s = new Session();
-        $s->setName('Session Name');
-        $this->assertEquals('Session Name', $s->getName());
     }
 }
