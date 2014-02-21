@@ -2,8 +2,7 @@
     "name": "stephen-hill/Nimoy",
     "description": "Nimoy is a PHP User Session hanlder which is simple and secure... hopefully.",
     "require": {
-        "predis/predis": "0.*",
-        "pimple/pimple": "2.*"
+        "predis/predis": "0.*"
     },
     "license": "MIT",
     "authors": [
