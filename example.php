@@ -12,4 +12,8 @@ setcookie(
 	time() + 60
 );
 
+var_dump($session->getToken());
+
+var_dump($session->validToken($session->getToken()));
+
 var_dump($session);
