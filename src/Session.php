@@ -3,12 +3,13 @@
 namespace Nimoy
 {
     use InvalidArgumentException;
-    
-    class Session extends \Pimple
+    use ArrayObject;
+
+    class Session extends ArrayObject
     {
         private $key;
         private $name = '';
-        
+
         /**
          * Creates an instance of this class using either an existing session key
          * or allowing the constructor to generate a new one.
@@ -26,7 +27,7 @@ namespace Nimoy
                 {
                     throw new InvalidArgumentException('Argument $key must contain 64 or more characters.');
                 }
-                
+
                 $this->key = $key;
             }
         }
@@ -36,43 +37,44 @@ namespace Nimoy
             return $this->key;
         }
 
-        public function getName()
-        {
-
-            return $this->name;
-        }
-
-        public function setName($name)
-        {
-            if (is_string($name) === false)
-            {
-                throw new InvalidArgumentException('Argument $name must be a string.');
-            }
-
-            $this->name = $name;
-        }
-
         public function regenerate()
         {
-            return $this->key = $this->generateKey();
+            $this->key = $this->generateKey();
+            $this->token = null;
+
+            return $this;
         }
-        
+
+        public function save()
+        {
+
+        }
+
+        public function destroy()
+        {
+
+        }
+
+        public function getToken()
+        {
+            if ($this->token === null)
+            {
+                $this->token = hash('ripemd128', openssl_random_pseudo_bytes(16));
+            }
+
+            return $this->token;
+        }
+
+        public function validToken($value)
+        {
+            $return = ($value === $this->token);
+            $this->token = null;
+            return $return;
+        }
+
         private function generateKey()
         {
-            $entropy = array();
-            $entropy[] = hash('sha256', mt_rand());
-            $entropy[] = hash('sha256', uniqid('', true));
-            $entropy[] = hash('sha256', microtime());
-            $entropy[] = hash('sha256', memory_get_usage(true));
-            $entropy[] = hash('sha256', getmypid());
-            $entropy[] = hash('sha256', memory_get_peak_usage(true));
-            $entropy[] = hash('sha256', json_encode(get_defined_constants()));
-            $entropy[] = hash('sha256', json_encode(get_included_files()));
-            $entropy[] = hash('sha256', json_encode(get_loaded_extensions()));
-            $entropy[] = hash('sha256', json_encode(ini_get_all()));
-            $entropy[] = hash('sha256', json_encode(posix_times()));
-            
-            return hash('sha256', implode($entropy));
+            return hash('sha512', openssl_random_pseudo_bytes(4096));
         }
     }
 }
