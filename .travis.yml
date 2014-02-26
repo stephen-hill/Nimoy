@@ -1,6 +1,7 @@
 language: php
 
 before_script:
+  - phpenv config-add travis.ini
   - composer install
 
 php:
@@ -15,7 +16,5 @@ services:
 matrix:
   allow_failures:
     - php: hhvm
-
-before_script: phpenv config-add travis.ini
 
 script: phpunit
