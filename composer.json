@@ -2,7 +2,7 @@
     "name": "stephen-hill/Nimoy",
     "description": "Nimoy is a PHP User Session hanlder which is simple and secure... hopefully.",
     "require": {
-        "ext-phpiredis": "*",
+        "ext-redis": "*",
         "ext-memcached": "*",
         "lib-openssl": "*"
     },
