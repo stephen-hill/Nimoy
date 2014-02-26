@@ -2,14 +2,20 @@
     "name": "stephen-hill/Nimoy",
     "description": "Nimoy is a PHP User Session hanlder which is simple and secure... hopefully.",
     "require": {
-        "predis/predis": "0.*"
+        "ext-phpiredis": "*",
+        "ext-memcached": "*",
+        "lib-openssl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~3.0"
     },
     "license": "MIT",
     "authors": [
         {
             "name": "Stephen Hill",
             "email": "stephen@gatekiller.co.uk",
-            "homepage": "http://github.com/stephen-hill"
+            "homepage": "http://github.com/stephen-hill",
+            "role": "Developer"
         }
     ],
     "autoload": {
