@@ -22,5 +22,8 @@
         "psr-4": {
             "Nimoy\\": "src/"
         }
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }
