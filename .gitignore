@@ -2,3 +2,4 @@ composer.lock
 notes.md
 vendor/*
 phpunit/*
+bin/*
