@@ -17,4 +17,4 @@ matrix:
   allow_failures:
     - php: hhvm
 
-script: vendor/bin/phpunit
+script: bin/phpunit
