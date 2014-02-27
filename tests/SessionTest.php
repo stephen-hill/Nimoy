@@ -13,18 +13,9 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
     public function testValidKey()
     {
-        $key = '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4a';
-        $s = new Session($key);
+        $key = $_COOKIE['NimoySession'] = '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4a';
+        $s = new Session();
         $this->assertEquals($key, $s->getKey());
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testInvalidKey()
-    {
-        $key = '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4';
-        $s = new Session($key);
     }
 
     public function testRegenerate()
