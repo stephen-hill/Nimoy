@@ -24,14 +24,11 @@ namespace Nimoy
 			return $this->memcached->get($key);
 		}
 
-		public function set($key, $value, $expires = 0)
+		public function set($key, $value, $duration = 0)
 		{
-			if ($expires > (60*60*24*30))
-			{
-				$expires += time();
-			}
+			$duration += time();
 
-			return $this->memcached->set($key, $value, $expires);
+			return $this->memcached->set($key, $value, $duration);
 		}
 	}
 }
