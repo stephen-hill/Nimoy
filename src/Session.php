@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @package nimoy
+ * @version 0.2
+ * @author Stephen Hill <stephen@gatekiller.co.uk>
+ * @copyright Copyright 2014 Stephen Hill
+ * @license MIT
+ */
+
 namespace Nimoy
 {
     use InvalidArgumentException;
@@ -15,9 +23,9 @@ namespace Nimoy
         protected $sessionName;
 
         /**
-         * Creates an instance of this class using either an existing session key
-         * or allowing the constructor to generate a new one.
-         * @param string $key (Optional)
+         * Create an instance of this class
+         * @param array $options (Optional)
+         * @since v0.1.0
          */
         public function __construct(array $options = array())
         {
