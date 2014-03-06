@@ -11,19 +11,31 @@ namespace Nimoy
         protected $token;
         protected $flash = [];
         protected $provider;
+        protected $expires;
+        protected $sessionName;
 
         /**
          * Creates an instance of this class using either an existing session key
          * or allowing the constructor to generate a new one.
          * @param string $key (Optional)
          */
-        public function __construct(array $options = null)
+        public function __construct(array $options = array())
         {
-            $this->provider = new MemcachedProvider();
+            $defaults = array(
+                'expires' => time() + 60,
+                'provider' => new MemcachedProvider(),
+                'name' => 'DefaultSession'
+            );
 
-            if (isset($_COOKIE['NimoySession']) === true)
+            $options = array_merge($defaults, $options);
+
+            $this->provider = $options['provider'];
+            $this->sessionName = $options['name'];
+            $this->expires = $options['expires'];
+
+            if (isset($_COOKIE[$this->sessionName]) === true)
             {
-                $this->key = $_COOKIE['NimoySession'];
+                $this->key = $_COOKIE[$this->sessionName];
             }
             else
             {
@@ -50,9 +62,24 @@ namespace Nimoy
             }
         }
 
+        public function __destruct()
+        {
+            $this->save();
+        }
+
         public function getKey()
         {
             return $this->key;
+        }
+
+        public function getSessionName()
+        {
+            return $this->sessionName;
+        }
+
+        public function getExpires()
+        {
+            return $this->expires;
         }
 
         public function regenerate()
@@ -66,9 +93,9 @@ namespace Nimoy
 
         public function save()
         {
-            $this->provider->set($key . 'token', $this->token);
-            $this->provider->set($key . 'flash', $this->flash);
-            $this->provider->set($key . 'array', (array)$this);
+            $this->provider->set($this->key . 'token', $this->token, $this->expires);
+            $this->provider->set($this->key . 'flash', $this->flash, $this->expires);
+            $this->provider->set($this->key . 'array', (array)$this, $this->expires);
         }
 
         public function destroy()

@@ -4,16 +4,22 @@ use Nimoy\Session;
 
 require_once('vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
 
-$session = new Session((isset($_COOKIE['ExampleSession']) ? $_COOKIE['ExampleSession'] : null));
+$session = new Session(array(
+	'expires' => 2419200, //28 days
+	'name' => 'ExampleNimoySession',
+	'provider' => new MemcachedProvider()
+));
 
-setcookie(
-	'ExampleSession',
-	$session->getKey(),
-	time() + 60
-);
-
-var_dump($session->getToken());
-
-var_dump($session->validToken($session->getToken()));
+if (isset($session['time']) == false)
+{
+	$session['time'] = time();
+}
 
 var_dump($session);
+var_dump($session->getkey());
+
+setcookie(
+	$session->getSessionName(),
+	$session->getKey(),
+	$session->getExpires() + time()
+);
