@@ -2,10 +2,11 @@
 
 /**
  * @package nimoy
- * @version 0.2
+ * @version v0.2.0
  * @author Stephen Hill <stephen@gatekiller.co.uk>
  * @copyright Copyright 2014 Stephen Hill
  * @license MIT
+ * @link https://github.com/stephen-hill/Nimoy
  */
 
 namespace Nimoy
@@ -15,6 +16,9 @@ namespace Nimoy
 
     class Session extends ArrayObject
     {
+        /**
+         * @var string $key The key for this session.
+         */
         protected $key;
         protected $token;
         protected $flash = [];
@@ -29,6 +33,17 @@ namespace Nimoy
          */
         public function __construct(array $options = array())
         {
+            // Declare default hash functions
+            $this['key_hash'] = function()
+            {
+                return hash('sha512', openssl_random_pseudo_bytes(4096));
+            };
+
+            $this['token_hash'] = function()
+            {
+                return hash('adler32', openssl_random_pseudo_bytes(4096));
+            };
+
             $defaults = array(
                 'expires' => time() + 60,
                 'provider' => new MemcachedProvider(),
@@ -70,26 +85,41 @@ namespace Nimoy
             }
         }
 
+        /**
+         * @since v0.2.0
+         */
         public function __destruct()
         {
             $this->save();
         }
 
+        /**
+         * @since v0.1.0
+         */
         public function getKey()
         {
             return $this->key;
         }
 
+        /**
+         * @since v0.2.0
+         */
         public function getSessionName()
         {
             return $this->sessionName;
         }
 
+        /**
+         * @since v0.2.0
+         */
         public function getExpires()
         {
             return $this->expires;
         }
 
+        /**
+         * @since v0.1.0
+         */
         public function regenerate()
         {
             $this->key = $this->generateKey();
@@ -99,13 +129,22 @@ namespace Nimoy
             return $this;
         }
 
+        /**
+         * @since v0.2.0
+         * @return self
+         */
         public function save()
         {
             $this->provider->set($this->key . 'token', $this->token, $this->expires);
             $this->provider->set($this->key . 'flash', $this->flash, $this->expires);
             $this->provider->set($this->key . 'array', (array)$this, $this->expires);
+
+            return $this;
         }
 
+        /**
+         * @since v0.2.0
+         */
         public function destroy()
         {
             $this->provider->delete($key . 'token');
@@ -115,26 +154,42 @@ namespace Nimoy
             unset($this->key, $this->token, $this->flash);
         }
 
+        /**
+         * @return string The value of the token.
+         */
         public function getToken()
         {
             if ($this->token === null)
             {
-                $this->token = hash('adler32', openssl_random_pseudo_bytes(4096));
+                $this->token = $this['token_hash']();
             }
 
             return $this->token;
         }
 
+        /**
+         * @param string $value The string value of the token.
+         * @return bool Returns true if the supplied token is valid, otherwise it returns false.
+         */
         public function validToken($value)
         {
             return ($value === $this->token);
         }
 
+        /**
+         * @since v0.2.0
+         * @param string $key The key for the flash message.
+         * @param mixed $value The data you want saved to the flash message.
+         */
         public function setFlash($key, $value)
         {
             $this->flash[$key] = $value;
         }
 
+        /**
+         * @since v0.2.0
+         * @param string $key The key for the flash message you want to retrieve.
+         */
         public function getFlash($key)
         {
             $value = $this->flash[$key];
@@ -142,14 +197,22 @@ namespace Nimoy
             return $value;
         }
 
+        /**
+         * @since v0.2.0
+         * @param string $key The key for the flash message you want to check exists.
+         */
         public function hasFlash($key)
         {
             return isset($this->flash[$key]);
         }
 
+        /**
+         * @since v0.1.0
+         * @return string Return's a brand new hash.
+         */
         private function generateKey()
         {
-            return hash('sha512', openssl_random_pseudo_bytes(4096));
+            return $this['key_hash']();
         }
     }
 }
