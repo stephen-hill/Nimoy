@@ -7,6 +7,7 @@ namespace Nimoy
 	class MemcachedProvider implements ProviderInterface
 	{
 		protected $memcached;
+		private $defaultDuration = 60;
 
 		public function __construct($host = '127.0.0.1', $port = 11211)
 		{
@@ -26,6 +27,11 @@ namespace Nimoy
 
 		public function set($key, $value, $duration = 0)
 		{
+			if ($duration === 0)
+			{
+				$duration = 60;
+			}
+
 			$duration += time();
 
 			return $this->memcached->set($key, $value, $duration);
