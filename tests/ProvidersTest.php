@@ -23,6 +23,7 @@ class MemcachedProviderTest extends PHPUnit_Framework_TestCase
 		{
 			// Test String
 			$p->set('StringKey', 'Hello World');
+			sleep(1);
 			$this->assertSame('Hello World', $p->get('StringKey'));
 
 			// Test Integers
