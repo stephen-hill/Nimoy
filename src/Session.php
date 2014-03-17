@@ -65,7 +65,7 @@ namespace Nimoy
             };
 
             $defaults = array(
-                'expires' => time() + 60,
+                'duration' => time() + 60,
                 'provider' => new MemcachedProvider(),
                 'name' => 'DefaultSession'
             );
@@ -74,7 +74,7 @@ namespace Nimoy
 
             $this->provider = $options['provider'];
             $this->sessionName = $options['name'];
-            $this->expires = $options['expires'];
+            $this->duration = $options['duration'];
 
             if (isset($_COOKIE[$this->sessionName]) === true)
             {
@@ -137,9 +137,9 @@ namespace Nimoy
         /**
          * @since v0.2.0
          */
-        public function getExpires()
+        public function getDuration()
         {
-            return $this->expires;
+            return $this->duration;
         }
 
         /**
@@ -162,9 +162,9 @@ namespace Nimoy
          */
         public function save()
         {
-            $this->provider->set($this->key . 'token', $this->token, $this->expires);
-            $this->provider->set($this->key . 'flash', $this->flash, $this->expires);
-            $this->provider->set($this->key . 'array', (array)$this, $this->expires);
+            $this->provider->set($this->key . 'token', $this->token, $this->duration);
+            $this->provider->set($this->key . 'flash', $this->flash, $this->duration);
+            $this->provider->set($this->key . 'array', (array)$this, $this->duration);
 
             return $this;
         }

@@ -5,7 +5,7 @@ use Nimoy\Session;
 require_once('vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
 
 $session = new Session(array(
-	'expires' => 2419200, //28 days
+	'duration' => 2419200, //28 days
 	'name' => 'ExampleNimoySession',
 	'provider' => new MemcachedProvider()
 ));
@@ -21,5 +21,5 @@ var_dump($session->getkey());
 setcookie(
 	$session->getSessionName(),
 	$session->getKey(),
-	$session->getExpires() + time()
+	$session->getDuration() + time()
 );
