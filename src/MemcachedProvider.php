@@ -27,11 +27,6 @@ namespace Nimoy
 
 		public function set($key, $value, $duration = 0)
 		{
-			if ($duration === 0)
-			{
-				$duration = 60;
-			}
-
 			$duration += time();
 
 			return $this->memcached->set($key, $value, $duration);
