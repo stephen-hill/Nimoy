@@ -171,9 +171,8 @@ namespace Nimoy
 
         /**
          * @since v0.2.0
-         * @todo Rename this method to something better.
          */
-        public function destroy()
+        public function invalidate()
         {
             $this->provider->delete($key . 'token');
             $this->provider->delete($key . 'flash');
